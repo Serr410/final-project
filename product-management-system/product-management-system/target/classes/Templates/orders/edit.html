@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать заказ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Управление заказами</a>
+        <a href="/orders" class="btn btn-outline-light">Назад к списку</a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h1 class="mb-4">Редактировать заказ №<span th:text="${order.orderNumber}"></span></h1>
+
+    <form th:action="@{/orders/update/{id}(id=${order.orderNumber})}" method="post">
+        <!-- Номер заказа (только чтение) -->
+        <div class="mb-3">
+            <label class="form-label">Номер заказа</label>
+            <input type="text" class="form-control"
+                   th:value="${order.orderNumber}" readonly>
+        </div>
+
+        <!-- Выбор продукта -->
+        <div class="mb-3">
+            <label class="form-label">Выберите продукт *</label>
+            <select class="form-select" name="selectedProductName" required
+                    id="productSelect" onchange="updateProductInfo()">
+                <option th:each="product : ${allProducts}"
+                        th:value="${product.name}"
+                        th:text="${product.name}"
+                        th:data-price="${product.currentPrice}"
+                        th:data-stock="${product.stockStatus}"
+                        th:selected="${product.name == order.productName}">
+                </option>
+            </select>
+            <div class="mt-2">
+                <small>
+                    Цена: <span id="productPrice">-</span> ₽ |
+                    Наличие: <span id="productStock">-</span>
+                </small>
+            </div>
+        </div>
+
+        <!-- Выбор предприятия -->
+        <div class="mb-3">
+            <label class="form-label">Выберите предприятие *</label>
+            <select class="form-select" name="selectedEnterpriseName" required>
+                <option th:each="enterprise : ${allEnterprises}"
+                        th:value="${enterprise.name}"
+                        th:text="${enterprise.name + ' (Руководитель: ' + enterprise.directorName + ')'}"
+                        th:selected="${enterprise.name == order.enterpriseName}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Статус заказа -->
+        <div class="mb-3">
+            <label class="form-label">Статус заказа *</label>
+            <select class="form-select" name="orderStatus" required>
+                <option value="PENDING" th:selected="${order.orderStatus == 'PENDING'}">🟡 В ожидании</option>
+                <option value="PROCESSING" th:selected="${order.orderStatus == 'PROCESSING'}">🔄 В обработке</option>
+                <option value="COMPLETED" th:selected="${order.orderStatus == 'COMPLETED'}">✅ Завершен</option>
+                <option value="CANCELLED" th:selected="${order.orderStatus == 'CANCELLED'}">❌ Отменен</option>
+            </select>
+        </div>
+
+        <!-- Цена -->
+        <div class="mb-3">
+            <label class="form-label">Цена за единицу *</label>
+            <div class="input-group">
+                <input type="number" step="0.01" class="form-control"
+                       name="currentPriceInOrder" id="priceInput" required
+                       th:value="${order.currentPriceInOrder}">
+                <span class="input-group-text">₽</span>
+            </div>
+            <small class="text-muted">Текущая цена выбранного продукта: <span id="currentProductPrice">-</span> ₽</small>
+        </div>
+
+        <!-- Дата заказа -->
+        <div class="mb-3">
+            <label class="form-label">Дата заказа *</label>
+            <input type="date" class="form-control" name="orderDate"
+                   th:value="${#temporals.format(order.orderDate, 'yyyy-MM-dd')}" required>
+        </div>
+
+        <!-- Кнопки -->
+        <div class="mb-3">
+            <button type="submit" class="btn btn-warning">Обновить заказ</button>
+            <a href="/orders" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function updateProductInfo() {
+        const select = document.getElementById('productSelect');
+        const selectedOption = select.options[select.selectedIndex];
+
+        if (selectedOption.value) {
+            const price = parseFloat(selectedOption.dataset.price).toFixed(2);
+
+            // Обновляем информацию о цене продукта
+            document.getElementById('currentProductPrice').textContent = price;
+            document.getElementById('productPrice').textContent = price;
+
+            // Преобразуем статус
+            const stock = selectedOption.dataset.stock;
+            let stockText = '';
+            switch(stock) {
+                case 'IN_STOCK': stockText = '✅ В наличии'; break;
+                case 'LOW_STOCK': stockText = '⚠️ Мало осталось'; break;
+                case 'OUT_OF_STOCK': stockText = '❌ Нет в наличии'; break;
+                default: stockText = stock;
+            }
+            document.getElementById('productStock').textContent = stockText;
+        }
+    }
+
+    // Инициализация при загрузке
+    document.addEventListener('DOMContentLoaded', function() {
+        updateProductInfo();
+    });
+</script>
+</body>
+</html>
+</body>
+</html>

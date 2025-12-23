@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить предприятие</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Добавить новое предприятие</h1>
+    <form th:action="@{/enterprises}" th:object="${enterprise}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Серийный номер:</label>
+            <input type="text" class="form-control" th:field="*{serialNumber}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Название предприятия:</label>
+            <input type="text" class="form-control" th:field="*{name}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Имя руководителя:</label>
+            <input type="text" class="form-control" th:field="*{directorName}" required>
+        </div>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <a href="/enterprises" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+</body>
+</html>

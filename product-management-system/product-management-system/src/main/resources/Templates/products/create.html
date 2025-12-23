@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить продукт</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Добавить новый продукт</h1>
+    <form th:action="@{/products}" th:object="${product}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Серийный номер:</label>
+            <input type="text" class="form-control" th:field="*{serialNumber}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Название:</label>
+            <input type="text" class="form-control" th:field="*{name}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Текущая цена:</label>
+            <input type="number" step="0.01" class="form-control" th:field="*{currentPrice}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Статус наличия:</label>
+            <select class="form-control" th:field="*{stockStatus}">
+                <option value="IN_STOCK">В наличии</option>
+                <option value="LOW_STOCK">Мало осталось</option>
+                <option value="OUT_OF_STOCK">Нет в наличии</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <a href="/products" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+</body>
+</html>

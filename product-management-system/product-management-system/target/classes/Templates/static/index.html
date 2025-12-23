@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Система управления продуктами и заказами</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .jumbotron {
+            background: grey;
+            color: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .stats {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            Product Management System
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">Продукты</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/enterprises">Предприятия</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders">Заказы</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="jumbotron">
+        <h1 class="display-4">Система управления заказами</h1>
+        <p class="lead">Комплексное решение для управления товарами, предприятиями и заказами</p>
+        <hr class="my-4">
+        <p>Система позволяет управлять каталогом продуктов, списком предприятий и историей заказов.</p>
+        <a class="btn btn-light btn-lg" href="#features" role="button">Начать работу</a>
+    </div>
+
+    <div id="features" class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title mt-3">Продукты</h5>
+                    <p class="card-text">Управление каталогом продуктов: добавление, редактирование и отслеживание товаров.</p>
+                    <a href="/products" class="btn btn-primary">Перейти к продуктам</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title mt-3">Предприятия</h5>
+                    <p class="card-text">Управление списком предприятий-партнеров и их руководителей.</p>
+                    <a href="/enterprises" class="btn btn-primary">Перейти к предприятиям</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title mt-3">Заказы</h5>
+                    <p class="card-text">Просмотр и управление заказами, отслеживание статусов и истории сделок.</p>
+                    <a href="/orders" class="btn btn-primary">Перейти к заказам</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Автоматическое обновление статистики
+    function updateStats() {
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('[th\\:text="${productsCount}"]').textContent = data.productsCount || 0;
+                document.querySelector('[th\\:text="${enterprisesCount}"]').textContent = data.enterprisesCount || 0;
+                document.querySelector('[th\\:text="${ordersCount}"]').textContent = data.ordersCount || 0;
+            })
+            .catch(error => console.log('Ошибка загрузки статистики:', error));
+    }
+
+    // Обновляем статистику при загрузке страницы
+    document.addEventListener('DOMContentLoaded', updateStats);
+</script>
+</body>
+</html>
