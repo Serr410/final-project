@@ -61,10 +61,10 @@
         <div class="mb-3">
             <label class="form-label">Статус заказа *</label>
             <select class="form-select" name="orderStatus" required>
-                <option value="PENDING" th:selected="${order.orderStatus == 'PENDING'}">🟡 В ожидании</option>
-                <option value="PROCESSING" th:selected="${order.orderStatus == 'PROCESSING'}">🔄 В обработке</option>
-                <option value="COMPLETED" th:selected="${order.orderStatus == 'COMPLETED'}">✅ Завершен</option>
-                <option value="CANCELLED" th:selected="${order.orderStatus == 'CANCELLED'}">❌ Отменен</option>
+                <option value="PENDING" th:selected="${order.orderStatus == 'PENDING'}">В ожидании</option>
+                <option value="PROCESSING" th:selected="${order.orderStatus == 'PROCESSING'}">В обработке</option>
+                <option value="COMPLETED" th:selected="${order.orderStatus == 'COMPLETED'}">Завершен</option>
+                <option value="CANCELLED" th:selected="${order.orderStatus == 'CANCELLED'}">Отменен</option>
             </select>
         </div>
 
@@ -111,9 +111,9 @@
             const stock = selectedOption.dataset.stock;
             let stockText = '';
             switch(stock) {
-                case 'IN_STOCK': stockText = '✅ В наличии'; break;
-                case 'LOW_STOCK': stockText = '⚠️ Мало осталось'; break;
-                case 'OUT_OF_STOCK': stockText = '❌ Нет в наличии'; break;
+                case 'IN_STOCK': stockText = 'В наличии'; break;
+                case 'LOW_STOCK': stockText = 'Мало осталось'; break;
+                case 'OUT_OF_STOCK': stockText = 'Нет в наличии'; break;
                 default: stockText = stock;
             }
             document.getElementById('productStock').textContent = stockText;
@@ -128,4 +128,5 @@
 </body>
 </html>
 </body>
+
 </html>
